@@ -1,4 +1,18 @@
 const Tabs = (topics) => {
+
+  const topicsContainer = document.createElement('div');
+  topicsContainer.classList.add('topics');
+
+  topics.forEach(topic => {
+    const tabElement = document.createElement('div');
+    tabElement.classList.add('tab');
+    tabElement.textContent = topic;
+
+    topicsContainer.appendChild(tabElement);
+  });
+
+  return topicsContainer;
+
   // TASK 3
   // ---------------------
   // Implement this function which takes an array of strings ("topics") as its only argument.
@@ -16,6 +30,22 @@ const Tabs = (topics) => {
 }
 
 const tabsAppender = (selector) => {
+  
+  fetch('http://localhost:5001/api/topics')
+    .then(response => response.json())
+    .then(data => {
+  
+      const topics = data.topics;
+      
+      const tabsElement = Tabs(topics);
+      
+      const targetElement = document.querySelector(selector);
+      targetElement.appendChild(tabsElement);
+    })
+    .catch(error => console.error('Error fetching topics:', error));
+
+
+
   // TASK 4
   // ---------------------
   // Implement this function which takes a css selector as its only argument.
@@ -23,6 +53,6 @@ const tabsAppender = (selector) => {
   // Find the array of topics inside the response, and create the tabs using the Tabs component.
   // Append the tabs to the element in the DOM that matches the selector passed to the function.
   //
-}
+};
 
 export { Tabs, tabsAppender }
